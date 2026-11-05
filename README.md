@@ -6,99 +6,164 @@
 
 ## 📌 Project Overview
 
-This project focuses on auditing and assessing an existing enterprise IT infrastructure as part of an infrastructure security and administration project.
+This project focuses on conducting a comprehensive IT infrastructure audit for CloudNexa, a fictional company with approximately 60 employees.
 
-The objective was to analyze the current state of a company's IT infrastructure, identify potential security weaknesses, evaluate network reliability, and propose technical improvements to support future growth.
+The objective was to assess the current state of the company's IT infrastructure, identify potential vulnerabilities and operational weaknesses, evaluate network resilience, and determine whether the existing environment could support future business growth.
 
-The audit was conducted on a fictional company named CloudNexa, with approximately 60 employees.
+The audit was based on an outdated infrastructure documentation dating from March 2023. Through network discovery, service enumeration, configuration reviews, and infrastructure analysis, the existing environment was compared against its historical documentation to identify discrepancies and undocumented assets.
 
-The infrastructure was analyzed using network discovery tools, configuration reviews, service enumeration, and documentation analysis.
+The assessment covered the network architecture, switching infrastructure, VLAN segmentation, IP addressing, DHCP services, virtualization environment, backup infrastructure, perimeter security, and network scalability.
 
-### The project covers :
+The final deliverable is a structured infrastructure audit report containing an asset inventory, logical network mapping, risk assessment, critical findings, and prioritized technical recommendations.
 
-* Network infrastructure discovery and inventory
-* Network topology analysis and mapping
-* VLAN architecture and IP addressing
-* Cisco switch configuration analysis
-* Spanning Tree Protocol (STP)
-* EtherChannel and link aggregation
-* DHCP configuration and address management
-* Server and service discovery
-* Backup infrastructure assessment
-* Firewall security assessment
-* Virtualization infrastructure analysis
-* Risk identification and criticality assessment
-* Technical recommendations and remediation planning
+### Key findings :
+
+* 19 infrastructure elements inventoried.
+* 3 assets documented but absent or unreachable.
+* 4 previously undocumented infrastructure elements identified.
+* 9 findings identified: 5 critical, 3 high, and 1 moderate.
+* Several weaknesses affecting network availability, backup security, perimeter protection, and infrastructure scalability.
 
 ---
 
 ## 🎯 Objectives
 
-### The main objectives of this audit were to :
+The project was designed around three main assessment areas: infrastructure health, operational resilience, and future scalability.
 
-* Identify the network devices and servers currently present in the infrastructure.
-* Compare the existing infrastructure with the documentation provided by the company.
-* Analyze the network architecture and understand how the different VLANs communicate.
-* Identify configuration issues affecting network performance and availability.
-* Assess the security of critical services and infrastructure components.
-* Evaluate the backup solution and virtualization environment.
-* Identify single points of failure and potential availability risks.
-* Build a risk matrix based on impact and likelihood.
-* Propose technical recommendations to improve infrastructure security and reliability.
-* Define a prioritized action plan for infrastructure modernization.
+### Infrastructure Assessment :
+
+* Identify active devices, servers, and network components.
+* Compare the actual infrastructure against the 2023 documentation.
+* Identify undocumented equipment and discrepancies.
+* Review the existing network topology and IP addressing scheme.
+* Analyze the configuration of switches, routers, firewalls, and network services.
+
+### Network Analysis :
+
+* Discover active hosts across authorized network segments.
+* Identify exposed services and listening ports.
+* Analyze VLAN segmentation and inter-VLAN routing.
+* Review Spanning Tree Protocol (STP) configuration.
+* xamine EtherChannel and Link Aggregation Control Protocol (LACP) configurations.
+* Investigate potential network bottlenecks and single points of failure.
+
+### Security Assessment :
+
+* Identify outdated operating systems and vulnerable services.
+* Evaluate the security status of the backup infrastructure.
+* Review firewall subscription status and perimeter protection.
+* Identify unnecessary or insecure network services.
+* Assess the potential impact of identified weaknesses.
+
+### Resilience and Scalability :
+
+* Identify single points of failure.
+* Evaluate the availability of network and virtualization components.
+* Assess DHCP address pool capacity.
+* Evaluate physical network connectivity and available ports.
+* Determine whether the infrastructure can accommodate 15 additional employees planned for early 2027.
+
+### Recommendations :
+
+* Prioritize corrective actions according to risk severity.
+* Propose immediate security and configuration improvements.
+* Define a medium-term infrastructure modernization plan.
+* Establish a long-term strategy for redundancy, high availability, and monitoring.
 
 ---
 
 ## 🏗️ Infrastructure Overview
 
-The audit was performed on an existing enterprise network composed of several interconnected infrastructure components.
+The audited infrastructure represents a small-to-medium enterprise environment composed of network equipment, virtualization hosts, servers, storage, and perimeter security components.
 
-The environment includes :
+The infrastructure is organized into several logical network segments.
 
-* Cisco Catalyst switches
-* A network edge router
-* A FortiGate firewall
-* A Proxmox virtualization server
-* A NAS storage system
-* A dedicated backup server
-* Active Directory services
-* PostgreSQL database services
-* Web and mail relay services
+### 1. Network Architecture
 
-The infrastructure is divided into several network zones to separate users, servers, administration, and DMZ services.
+The network architecture includes the following components :
 
-### Network Segmentation
+Internet Connectivity
 
-The following networks were identified during the audit :
+* Orange Fiber connection.
+* RTR-EDGE: Edge router.
+* FW-01: FortiGate firewall providing perimeter security.
+* No operational 4G backup connection was identified.
 
-<img src="Images/Tableau_adressage.png" width="100%" />
+Core Network
 
-The analysis revealed several differences between the actual infrastructure and the company's previous network documentation.
+* SW-CORE: Cisco Catalyst 9300 core switch.
+* Inter-VLAN routing.
+* DHCP services for the user network.
+* Connectivity between the core network and the firewall.
+* A single core switch represents a major single point of failure.
+
+Access Layer
+
+* SW-ACC1: Access switch located on the first floor.
+* SW-ACC2: Cisco Catalyst 2960-S access switch located on the second floor.
+* Inter-switch connectivity using EtherChannel.
+* STP configuration requiring correction.
+
+Server Infrastructure
+
+* PVE01: Proxmox virtualization host.
+* NAS-01: Network Attached Storage.
+* SRV-BKP01: Backup server running Debian 7.
+* SRV-AD01: Active Directory domain controller.
+* PostgreSQL database services.
+* Additional services hosted in the server environment.
+
+DMZ
+
+* Dedicated network segment for externally exposed services.
+* SRV-WEB: Web server.
+* SRV-MAIL: SMTP relay.
+
+The physical connection of the DMZ servers could not be fully verified during the assessment.
+
+### 2. VLAN and IP Addressing
+
+The following network segments were identified :
+
+<img src="Images/Plan_adressage.png" width="100%" />
+
+The user network was found to be operating at approximately 99% DHCP utilization, leaving very limited capacity for additional devices.
 
 ---
 
-## 🔎 Part 1 : Network Discovery & Inventory
+## 🔎 Audit Methodology
 
-The first step consisted of identifying the devices currently connected to the different network segments.
+The assessment followed a structured and non-intrusive audit methodology.
 
-Nmap was used to discover active hosts, identify open ports, and detect running services.
+All activities were performed within the authorized scope defined in the audit mission.
 
-### 1.1 Host Discovery
+### 1. Network Discovery
 
-Network discovery scans were performed on the authorized subnets :
+Nmap was used to identify active hosts and discover exposed services across the authorized network segments.
 
+Main techniques :
+
+* Host discovery using -sn.
 ```
 nmap -sn 192.168.10.0/24
 ```
+* TCP SYN scanning using -sS.
 ```
 nmap -sn 192.168.20.0/24
 ```
+* Service and version detection using -sV.
 ```
 nmap -sn 10.99.0.0/24
 ```
+* Operating system detection using -O.
 ```
 nmap -sn 172.16.0.0/24
 ```
+* UDP service discovery using -sU.
+* Targeted port scanning for specific services.
+
+Network discovery scans were performed on the authorized subnets :
+
 
 This allowed me to identify active devices across the different network zones.
 
